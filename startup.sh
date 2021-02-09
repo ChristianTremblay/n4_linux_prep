@@ -139,8 +139,9 @@ do_main () {
   install_python_packages
 }
 
-
-do_main $1 > /tmp/centos_startup.log
+echo ""
+message "Log can be found here : /tmp/n4_startup.log"
+do_main $1 > /tmp/n4_startup.log >&3
 echo ""
 message "Now switch to root and install Niagara"
 
