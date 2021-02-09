@@ -141,7 +141,8 @@ do_main () {
 
 echo ""
 message "Log can be found here : /tmp/n4_startup.log"
-do_main $1 > /tmp/n4_startup.log > /bin/stdout
+#do_main $1 > /tmp/n4_startup.log > /bin/stdout
+do_main $1
 echo ""
 message "Now switch to root and install Niagara"
 
