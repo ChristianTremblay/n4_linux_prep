@@ -1,6 +1,6 @@
 #!/bin/bash
 # Run as root
-# curl https://github.com/ChristianTremblay/n4_linux_prep/edit/main/startup.sh | bash -s user_name
+curl https://raw.githubusercontent.com/ChristianTremblay/n4_linux_prep/main/startup.sh | bash -s user_name
 
 message () {
   echo "***************************************"
