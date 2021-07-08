@@ -1,5 +1,8 @@
 #!/bin/bash
 # Run as root
+# su 
+# enter root password
+# curl -s https://raw.githubusercontent.com/ChristianTremblay/n4_linux_prep/main/startup.sh | bash -s username
 
 message () {
   echo "***************************************"
@@ -41,6 +44,7 @@ setup_firewall () {
   sudo firewall-cmd --zone=public --permanent --add-port=5011/tcp
   sudo firewall-cmd --zone=public --permanent --add-port=8443/tcp
   sudo firewall-cmd --zone=public --permanent --add-port=47808/udp
+  sudo firewall-cmd --zone=public --permanent --add-port=47809/udp
   sudo firewall-cmd --zone=public --permanent --add-forward-port=port=80:proto=tcp:toport=8888
   sudo firewall-cmd --zone=public --permanent --add-forward-port=port=443:proto=tcp:toport=8443 
   sudo firewall-cmd --reload
