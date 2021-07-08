@@ -34,6 +34,8 @@ install_packages () {
 }
 
 setup_firewall () {
+  sudo firewall-cmd --zone=public --permanent --add-port=22/tcp
+  sudo firewall-cmd --zone=public --permanent --add-port=9090/tcp
   sudo firewall-cmd --zone=public --permanent --add-port=4911/udp
   sudo firewall-cmd --zone=public --permanent --add-port=4911/tcp
   sudo firewall-cmd --zone=public --permanent --add-port=5011/tcp
@@ -52,51 +54,51 @@ add_entropy () {
 }
 
 configure_tmux () {
-  if [ -f /home/${USER}/.tmux.conf ]; then
+  if [ -f /home/"${USER}"/.tmux.conf ]; then
     notice "Tmux configuration file already exist"
   else
-    wget https://gist.githubusercontent.com/ChristianTremblay/1ddcf3a8c27bb49b11cd2d8f1d813d87/raw/38cc371e38a7b38b3f6ff6e8bd45b4e84b7f1bd3/.tmux.conf -O /home/${USER}/.tmux.conf
+    wget https://gist.githubusercontent.com/ChristianTremblay/1ddcf3a8c27bb49b11cd2d8f1d813d87/raw/38cc371e38a7b38b3f6ff6e8bd45b4e84b7f1bd3/.tmux.conf -O /home/"${USER}"/.tmux.conf
 
   fi
 }
 
 create_termshark_script () {
-  if [ -f /home/${USER}/ts.sh ]; then
+  if [ -f /home/"${USER}"/ts.sh ]; then
     notice "Termshark script file already exist"
   else
-    wget https://gist.githubusercontent.com/ChristianTremblay/10611dde084fcf63d6d5fe5c739b009f/raw/dda38b30616f1ef6fa4462592bc19dec55307291/ts.sh -O /home/${USER}/ts.sh
-    sudo chmod +x /home/${USER}/ts.sh
+    wget https://gist.githubusercontent.com/ChristianTremblay/10611dde084fcf63d6d5fe5c739b009f/raw/dda38b30616f1ef6fa4462592bc19dec55307291/ts.sh -O /home/"${USER}"/ts.sh
+    sudo chmod +x /home/"${USER}"/ts.sh
   fi
 }
 
 install_python_packages () {
-  sudo -u ${USER} pip3 install BAC0 --user
-  sudo -u ${USER} pip3 install pyhaystack --user
-  sudo -u ${USER} pip3 install black --user
-  sudo -u ${USER} pip3 install ipython --user
+  sudo -u "${USER}" pip3 install BAC0 --user
+  sudo -u "${USER}" pip3 install pyhaystack --user
+  sudo -u "${USER}" pip3 install black --user
+  sudo -u "${USER}" pip3 install ipython --user
 }
 
 add_to_bashrc () {
-  if grep "$1" /home/${USER}/.bashrc ; then
+  if grep "$1" /home/"${USER}"/.bashrc ; then
     notice "is already there"
   else
     notice "Adding $1 to ${USER}'s .bashrc file"
-    echo "$1" >> /home/${USER}/.bashrc
+    echo "$1" >> /home/"${USER}"/.bashrc
   fi
 }
 
-NIAGARA_FOLDER=". /opt/Niagara/FacExp-4.8.0.110/bin/.niagara"
+NIAGARA_FOLDER=". /opt/Niagara/FacExp-4.9.0.198/bin/.niagara"
 ALIAS_PIP="alias pip=pip3"
 ALIAS_PYTHON="alias python=python3"
 ALIAS_TERMSHARK="alias ts=/home/${USER}/ts.sh"
 USER=""
-TMUXBASH="if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+TMUXBASH="if command -v tmux &> /dev/null && [ -z $TMUX ]; then
     tmux attach -t default || tmux new -s default
 fi"
 
 do_main () {
   USER=$1
-  if cat /etc/passwd | grep ${USER} ; then
+  if cat /etc/passwd | grep "${USER}" ; then
     echo "Good, we'll use ${USER} for the setup"
 
   else
@@ -105,7 +107,7 @@ do_main () {
   fi
   
   message "Adding ${USER} to Wheel"
-  usermod -aG wheel ${USER}
+  usermod -aG wheel "${USER}"
 
   message "Installing required packages"
   install_packages
@@ -124,7 +126,7 @@ do_main () {
   sudo snap install termshark
   create_termshark_script
 
-  message "Configuring .bashrc for ${user}"
+  message "Configuring .bashrc for ${USER}"
   add_to_bashrc "${NIAGARA_FOLDER}"
   add_to_bashrc "${ALIAS_PIP}"
   add_to_bashrc "${ALIAS_PYTHON}"
@@ -139,7 +141,7 @@ do_main () {
 }
 
 
-do_main $1 > /tmp/centos_startup.log
+do_main "$1" tee /tmp/centos_startup.log
 echo ""
 message "Now switch to root and install Niagara"
 
